@@ -24,7 +24,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'gender')->dropDownList([ 'M' => 'M', 'F' => 'F', ], ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'created')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userAdressModel, 'street')->input('text'); ?>
+
+    <?= $form->field($userAdressModel, 'city')->input('text'); ?>
+
+    <?= $form->field($userAdressModel, 'country_id[]')->dropDownList(
+        ['a' => 'UA', 'b' => 'GB']
+    ); ?>
+    <?= $form->field($userAdressModel, 'house')->input('text'); ?>
+    <?= $form->field($userAdressModel, 'office')->input('text'); ?>
+    <?= $form->field($userAdressModel, 'zip')->input('text'); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
