@@ -8,6 +8,7 @@ use app\models\UsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UserAdress;
 
 /**
  * UsersController implements the CRUD actions for Users model.
@@ -98,14 +99,27 @@ class UsersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $userAdressModel = new UserAdress();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+                'userAdressModel' => $userAdressModel
+            ]);
         }
+    }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+    public function actionUpdateUserAdress($userId)
+    {
+        $model = $this->findModel($userId);
+        $items = $model->userAdresses;
+
+        $items[] = new UserAdress();
+
+        if ( UserAdress::loadMultiple( Yii::$app->request->post() && $items->save()) ){
+
+        }
     }
 
     /**
