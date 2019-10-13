@@ -37,7 +37,7 @@ class UsersController extends Controller
     {
         $searchModel = new UsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->pagination = ['pageSize' => 5,];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -52,8 +52,10 @@ class UsersController extends Controller
      */
     public function actionView($id)
     {
+        $userAdress = UserAdress::findAll(['user_id' => $id]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'userAdress' => $userAdress,
         ]);
     }
 
@@ -65,14 +67,25 @@ class UsersController extends Controller
     public function actionCreate()
     {
         $model = new Users();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        //   $model->setScenario('insert');
+        $userAdressModel = new UserAdress();
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->save();
+            $idUser = $model->id;
+            //AppController::dd($model->id);
+            if($userAdressModel->load(Yii::$app->request->post()))
+            {
+                $userAdressModel->user_id = $idUser;
+                $userAdressModel->save(false);
+            }
+            return $this->redirect(['update', 'id' => $model->id]);
+            //  return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                'userAdressModel' => $userAdressModel
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

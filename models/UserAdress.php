@@ -34,12 +34,21 @@ class UserAdress extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['zip','street','city','country_id'], 'required'],
+            [['zip'], 'integer' ],
+            [['zip'], 'match' ,'pattern'=> '/^[0-9]*$/' ],
+            [['user_id'], 'exist',
+                'skipOnError' => true,
+                'targetClass' => Users::className(),
+                'targetAttribute' => ['user_id' => 'id']]
+        ];
+       /* return [
             [['user_id'], 'required'],
             [['user_id', 'country_id', 'house', 'office', 'zip'], 'integer'],
             [['street'], 'string', 'max' => 100],
             [['city'], 'string', 'max' => 50],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
-        ];
+        ];*/
     }
 
     /**

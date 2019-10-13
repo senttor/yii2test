@@ -2,6 +2,10 @@
 
 namespace app\models;
 
+use yii\base\Model;
+use yii\db\ActiveRecord;
+use app\models\UserAdress;
+use yii\validators\Validator;
 use Yii;
 
 /**
